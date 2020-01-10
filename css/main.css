@@ -1,5 +1,6 @@
 body {
   margin: 20px;
+  font-family: serif, "Microsoft YaHei";
 }
 
 @font-face {
@@ -30,7 +31,6 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  font-family: serif, "Microsoft YaHei";
 }
 
 .statistical-box {
@@ -80,4 +80,24 @@ body {
 
 #statistical-closed {
   background-color: #3b67a4 ;
+}
+
+#list-table {
+  width: 100%;
+  text-align: left;
+}
+
+#table-name {
+  font-size: 25px;
+  font-weight: 600;
+}
+
+#table-thead {
+  border-bottom: 1px solid #DCDEE3;
+  color: #333;
+  background: #ebecf0;
+}
+
+#table-thead th {
+  padding: 10px;
 }
