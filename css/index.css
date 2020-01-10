@@ -126,13 +126,13 @@ body {
   width: 340px;
   display: flex;
   flex-direction: column;
-  background-color: green;
   border-radius: 7px;
   padding: 15px;
   position: fixed;
   left: calc(50% - 170px);
   top: calc(50vh - 59px);
-  display: none;
+  visibility: hidden;
+  background-color: white;
 }
 
 #delete-text {
@@ -152,8 +152,6 @@ body {
   font-size: 24px;
   margin-right: 15px;
 }
-
-
 
 #delete-text {
   margin-bottom: 25px;
@@ -190,4 +188,8 @@ body {
 #delete-yes {
   background-color: #3080FE;
   color: white;
+}
+
+#delete-no {
+  background-color: white;
 }

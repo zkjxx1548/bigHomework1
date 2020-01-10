@@ -1,10 +1,18 @@
 (function () {
   const API_ROOT = "http://localhost:3000/projects";
   let $projectTbody = document.getElementById('table-tbody');
-    // let $username = document.getElementById('username');
-    // let $password = document.getElementById('password');
+  let $delete = document.getElementById('delete');
+  let $main = document.getElementById("main");
+  let $countAll = document.getElementById("count-all");
+  let $countActive = document.getElementById("count-active");
+  let $countPending = document.getElementById("count-pending");
+  let $countClosed = document.getElementById("count-closed");
+  let allCount = 0;
+  let activeCount = 0;
+  let pendingCount = 0;
+  let closedCount = 0;
+  let displayStyle = "overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;"
 
-    // TODO： get user list，when success, run renderUserList
   function getListData() {
     var options = {
       url: API_ROOT,
@@ -21,117 +29,117 @@
     ajax(options);
   }
 
-    // // TODO:  add user info,when success, run addItem
-    // function addItemData(data) {
-    //   var options = {
-    //     url: API_ROOT,
-    //     method: "POST",
-    //     headers: {},
-    //     data: data,
-    //     success: function (res) {
-    //       addItem(res);
-    //     },
-    //     fail: function (fail) {
-    //       console.log("fail", fail);
-    //     }
-    //   }
-    //   ajax(options);
-    // }
+  function deleteItemData(id) {
+    var options = {
+      url: API_ROOT + '/' + id,
+      method: "DELETE",
+      headers: {},
+      success: function (data) {
+        return deleteItem(data);
+      },
+      fail: function (fail) {
+        console.log("fail", fail);
+      }
+    }
+    ajax(options);
+  }
 
-    // // TODO: update user info,when success, run updateItem
-    // // 提示：Math.random().toString(36).substring(2) 生成随机的字符串
-    // function updateItemData(id) {
-    //   var options = {
-    //     url: API_ROOT + '/' + id,
-    //     method: "PUT",
-    //     headers: {},
-    //     data: {
-    //       "username": Math.random().toString(36).substring(2),
-    //       "password": Math.random().toString(36).substring(2)
-    //     },
-    //     success: function (data) {
-    //       updateItem(data);
-    //     },
-    //     fail: function (fail) {
-    //       console.log("fail", fail);
-    //     }
-    //   }
-    //   ajax(options);
-    // }
+  document.getElementById('main').addEventListener('click', function (e) {
+    if (e.target.className === "delete-button") {
+      $delete.style.visibility = "visible";
+      $main.style.backgroundColor = "rgba(0, 0, 0, 0.3)";
+      var itemTrId = e.target.parentNode.parentNode.id;
+      $delete.addEventListener('click', function (e) {
+        if (e.target.id === "delete-yes") {
+          $delete.style.visibility = "hidden";
+          $main.style.backgroundColor = "transparent";
+          deleteItemData(parseInt(itemTrId));
+        }else if (e.target.id === "delete-shut" || e.target.id === "delete-no") {
+          $delete.style.visibility = "hidden";
+          $main.style.backgroundColor = "transparent";
+        }
+      });
+    }
+  });
 
-    // // TODO: delete user info,,when success, run  deleteItem
-    // function deleteItemData(id) {
-    //   var options = {
-    //     url: API_ROOT + '/' + id,
-    //     method: "DELETE",
-    //     headers: {},
-    //     success: function (data) {
-    //         return deleteItem(data);
-    //     },
-    //     fail: function (fail) {
-    //         console.log("fail", fail);
-    //     }
-    //   }
-    //   ajax(options);
-    // }
+  document.getElementById('main').addEventListener('mouseover', function (e) {
+    if (e.target.className === "des") {
+      e.target.style = "overflow: hidden;text-overflow: ellipsis;-webkit-line-clamp: 2;-webkit-box-orient: vertical;"
+      e.target.addEventListener("mouseleave", function (e) {
+        e.target.style = displayStyle;
+      });
+    }
+  });
+  
 
-    // document.getElementById('add-btn').addEventListener('click', function () {
-    //     let $username = document.getElementById('username').value;
-    //     let $password = document.getElementById('password').value;
-    //     let data = {
-    //         "username": $username, // Math.random().toString(36).substring(2),
-    //         "password": $password
-    //     }
-    //     addItemData(data);
-    // })
-
-    // $userList.addEventListener('click', function (event) {
-    //     let id = event.target.getAttribute('data-id') || event.target.parentElement.getAttribute('data-id');
-
-    //     switch (true) {
-    //         case event.target.innerHTML === 'X':
-    //             deleteItemData(id);
-    //             break;
-    //         default:
-    //             updateItemData(id);
-    //     }
-    // })
+    
 
   function renderUserList(data) {
     if (!Array.isArray(data) && !data instanceof Array) {
       return false;
     }
+    let paddingStyle = "padding: 10px";
 
     $projectTbody.innerHTML = data.reduce((acc, cur) => {
-      return acc += `<tr id="${cur.id}">
-      <td>${cur.name}</td>
-      <td>${cur.description}</td>
-      <td>${cur.endTime}</td>
-      <td>${cur.status}</td>
-      <td><input type="button" value="删除" /></td>
+      getCount(cur);
+      acc += `<tr id="${cur.id}" style="border-bottom: 1px solid gray">
+      <td style="${paddingStyle}">${cur.name}</td>
+      <td style="${paddingStyle}"><span class="des" style="${displayStyle}">${cur.description}</span></td>
+      <td style="${paddingStyle}">${cur.endTime}</td>
+      <td style="color: ${getStatusColor(cur)}; ${paddingStyle}">${cur.status}</td>
+      <td style="${paddingStyle}"><input class="delete-button" type="button" value="删除" 
+      style="background-color: #ee706d;
+      padding: 5px;
+      border: 0;
+      border-radius: 3px;
+      color: white" /></td>
       </tr>`;
+      return acc;
     }, '');
+    updateCount();
   }
 
-    // function addItem(item) {
-    //     var $item = document.createElement('li');
-    //     $item.setAttribute('data-id', item.id);
-    //     $item.innerHTML = `<span>用户名：${item.username} - 密码：${item.password}</span><span>X</span>`;
-    //     $userList.appendChild($item);
-    //     $username.value = '';
-    //     $password.value = '';
-    // }
+  
 
-    // function updateItem(item) {
-    //     var $item = $userList.querySelector(`li[data-id='${item.id}']`);
-    //     $item.innerHTML = `<span>用户名：${item.username} - 密码：${item.password}</span><span>X</span>`;
-    // }
+  function getCount(data) {
+    switch (data.status) {
+      case "ACTIVE":
+        activeCount++;
+        break;
+      case "PENDING":
+        pendingCount++;
+        break;
+      case "CLOSED":
+        closedCount++;
+    }
+  }
 
-    // function deleteItem(id) {
-    //     var $item = $userList.querySelector(`li[data-id='${id}']`);
-    //     $userList.removeChild($item);
-    // }
+  function getStatusColor(data) {
+    switch (data.status) {
+      case "ACTIVE":
+        return "#666666";
+      case "PENDING":
+        return "#ee706d";
+      case "CLOSED":
+        return "#f7da47";
+    }
+  }
 
-    getListData();
+  function updateCount() {
+    allCount = activeCount + pendingCount + closedCount;
+    $countAll.innerHTML = allCount;
+    $countActive.innerHTML = activeCount;
+    $countActive.nextElementSibling.innerHTML = Math.floor((activeCount / allCount)*100) + '%';
+    $countPending.innerHTML = pendingCount;
+    $countPending.nextElementSibling.innerHTML = Math.floor((pendingCount / allCount)*100) + '%';
+    $countClosed.innerHTML = closedCount;
+    $countClosed.nextElementSibling.innerHTML = Math.floor((closedCount / allCount)*100) + '%';
+  }
 
+  function deleteItem(id) {
+    var $item = document.getElementById(id);
+    $projectTbody.removeChild($item);
+  }
+
+  getListData();
 })();
