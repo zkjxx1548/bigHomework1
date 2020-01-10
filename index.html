@@ -72,14 +72,18 @@
       </table>
     </div>
     <div id="delete">
-      <span class="iconfont-delete"></span>
-      <p>
-        <span>提示</span><br />
-        <span>确认删除该项目吗？</span>
-      </p>
-      <span class="iconfont-delete"></span>
-      <input type="button" id="delete-yes" value="确认" />
-      <input type="button" id="delete-no" value="取消" />
+      <span id="delete-shut" class="iconfont-delete">&#xe600;</span>
+      <div id="delete-text">
+        <span id="delete-question" class="iconfont-delete">&#xe60a;</span>
+        <p>
+          <span id="delete-title">提示</span><br />
+          <span id="delete-content">确认删除该项目吗？</span>
+        </p>
+      </div>
+      <div id="delete-button">
+        <input type="button" id="delete-yes" value="确认" />
+        <input type="button" id="delete-no" value="取消" />
+      </div>
     </div>
   </body>
   <script src="./js/ajax.js"></script>

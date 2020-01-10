@@ -1,6 +1,8 @@
 body {
   margin: 20px;
   font-family: serif, "Microsoft YaHei";
+  height: 100%;
+  position: relative;
 }
 
 @font-face {
@@ -100,4 +102,74 @@ body {
 
 #table-thead th {
   padding: 10px;
+}
+
+#delete {
+  width: 340px;
+  display: flex;
+  flex-direction: column;
+  background-color: green;
+  border-radius: 7px;
+  padding: 15px;
+  position: fixed;
+  left: calc(50% - 170px);
+  top: calc(50vh - 59px);
+  display: none;
+}
+
+#delete-text {
+  display: flex;
+  flex-direction: row;
+}
+
+.iconfont-delete {
+  font-family: "iconfont" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#delete-question {
+  color: #F1C826;
+  font-size: 24px;
+  margin-right: 15px;
+}
+
+
+
+#delete-text {
+  margin-bottom: 25px;
+}
+
+#delete-title {
+  line-height: 24px;
+  color: #333;
+  font-size: 20px;
+}
+
+#delete-content {
+  color: #666;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+#delete-shut {
+  font-size: 16px;
+  text-align: end;
+}
+
+#delete-button {
+  text-align: end;
+  border-radius: inherit;
+}
+
+#delete-button input {
+  padding: 5px;
+  border-radius: inherit;
+  border: 1px solid;
+}
+
+#delete-yes {
+  background-color: #3080FE;
+  color: white;
 }
