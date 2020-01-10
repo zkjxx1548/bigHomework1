@@ -92,6 +92,8 @@ body {
 #table-name {
   font-size: 25px;
   font-weight: 600;
+  margin-top: 25px;
+  margin-bottom: 25px;
 }
 
 #table-thead {
@@ -102,6 +104,22 @@ body {
 
 #table-thead th {
   padding: 10px;
+}
+
+#project-name {
+  width: 22%;
+}
+
+#project-des {
+  width: 40%;
+}
+
+#endTime {
+  width: 16%;
+}
+
+#project-status {
+  width: 13%;
 }
 
 #delete {
