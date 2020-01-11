@@ -2,7 +2,6 @@ body {
   margin: 20px;
   font-family: serif, "Microsoft YaHei";
   height: 100%;
-  position: relative;
 }
 
 @font-face {
@@ -36,13 +35,14 @@ body {
 }
 
 .statistical-box {
-  width: 21%;
   height: 100px;
   font-size: 14px;
   color: white;
   position: relative;
   border-radius: 7px;
   padding: 20px;
+  margin-right: 20px;
+  flex-grow: 1;
 }
 
 .info {
@@ -81,7 +81,8 @@ body {
 }
 
 #statistical-closed {
-  background-color: #3b67a4 ;
+  background-color: #3b67a4;
+  margin: 0;
 }
 
 #list-table {
@@ -99,7 +100,7 @@ body {
 #table-thead {
   border-bottom: 1px solid #DCDEE3;
   color: #333;
-  background: #ebecf0;
+  background-color: #ebecf0;
 }
 
 #table-thead th {

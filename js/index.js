@@ -1,6 +1,7 @@
 (function () {
   const API_ROOT = "http://localhost:3000/projects";
   let $projectTbody = document.getElementById('table-tbody');
+  let $tableThead = document.getElementById('table-thead');
   let $delete = document.getElementById('delete');
   let $main = document.getElementById("main");
   let $countAll = document.getElementById("count-all");
@@ -11,6 +12,7 @@
   let activeCount = 0;
   let pendingCount = 0;
   let closedCount = 0;
+  let itemTrId = 0;
   let displayStyle = "overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;"
 
   function getListData() {
@@ -34,8 +36,8 @@
       url: API_ROOT + '/' + id,
       method: "DELETE",
       headers: {},
-      success: function (data) {
-        return deleteItem(data);
+      success: function () {
+        return deleteItem(id);
       },
       fail: function (fail) {
         console.log("fail", fail);
@@ -44,25 +46,26 @@
     ajax(options);
   }
 
-  document.getElementById('main').addEventListener('click', function (e) {
+  document.getElementsByTagName('body')[0].addEventListener('click', function (e) {
     if (e.target.className === "delete-button") {
-      $delete.style.visibility = "visible";
-      $main.style.backgroundColor = "rgba(0, 0, 0, 0.3)";
-      var itemTrId = e.target.parentNode.parentNode.id;
-      $delete.addEventListener('click', function (e) {
-        if (e.target.id === "delete-yes") {
-          $delete.style.visibility = "hidden";
-          $main.style.backgroundColor = "transparent";
-          deleteItemData(parseInt(itemTrId));
-        }else if (e.target.id === "delete-shut" || e.target.id === "delete-no") {
-          $delete.style.visibility = "hidden";
-          $main.style.backgroundColor = "transparent";
-        }
-      });
+      displayDeleteDiv("visible", "rgba(0, 0, 0, 0.3)");
+      itemTrId = e.target.parentNode.parentNode.id;
+    }
+    switch (e.target.id) {
+      case "delete-yes":
+        getDeleteCount(document.getElementById(itemTrId).childNodes[7].innerHTML);
+        deleteItemData(itemTrId);
+        updateCount();
+        noDisplayDeleteDiv("hidden");
+        break;
+      case "delete-shut":
+      case "delete-no":
+        noDisplayDeleteDiv("hidden");
+        break;
     }
   });
 
-  document.getElementById('main').addEventListener('mouseover', function (e) {
+  $main.addEventListener('mouseover', function (e) {
     if (e.target.className === "des") {
       e.target.style = "overflow: hidden;text-overflow: ellipsis;-webkit-line-clamp: 2;-webkit-box-orient: vertical;"
       e.target.addEventListener("mouseleave", function (e) {
@@ -71,9 +74,6 @@
     }
   });
   
-
-    
-
   function renderUserList(data) {
     if (!Array.isArray(data) && !data instanceof Array) {
       return false;
@@ -99,8 +99,6 @@
     updateCount();
   }
 
-  
-
   function getCount(data) {
     switch (data.status) {
       case "ACTIVE":
@@ -124,6 +122,19 @@
         return "#f7da47";
     }
   }
+  
+  function getDeleteCount(data) {
+    switch (data) {
+      case "ACTIVE":
+        activeCount--;
+        break;
+      case "PENDING":
+        pendingCount--;
+        break;
+      case "CLOSED":
+        closedCount--;
+    }
+  }
 
   function updateCount() {
     allCount = activeCount + pendingCount + closedCount;
@@ -139,6 +150,18 @@
   function deleteItem(id) {
     var $item = document.getElementById(id);
     $projectTbody.removeChild($item);
+  }
+
+  function displayDeleteDiv(visibility, rgba) {
+    $delete.style.visibility = visibility;
+    $main.parentNode.style.backgroundColor = rgba;
+    $tableThead.style.backgroundColor = rgba;
+  }
+
+  function noDisplayDeleteDiv(visibility) {
+    $delete.style.visibility = visibility;
+    $main.parentNode.style.backgroundColor = "transparent";
+    $tableThead.style.backgroundColor =  "#ebecf0";
   }
 
   getListData();
