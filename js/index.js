@@ -13,6 +13,8 @@
   let pendingCount = 0;
   let closedCount = 0;
   let itemTrId = 0;
+  let dataDbJSON = [];
+  let $inputValue = document.getElementById("table-search");
   let displayStyle = "overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;"
 
   function getListData() {
@@ -22,7 +24,8 @@
       headers: {},
       data: {},
       success: function (res) {
-        renderUserList(res);
+        dataDbJSON = res;
+        renderUserList(dataDbJSON);
       },
       fail: function (fail) {
         console.log("fail", fail);
@@ -63,6 +66,32 @@
         noDisplayDeleteDiv("hidden");
         break;
     }
+
+    if (e.target.id === "iconfont-up") {
+      activeCount = 0;
+      pendingCount = 0;
+      closedCount = 0;
+      e.target.style.color = "#3080FE";
+      e.target.nextElementSibling.style.color = "#aaa";
+      renderUserList(sortUpDown(dataDbJSON));
+    }
+
+    if (e.target.id === "iconfont-down") {
+      activeCount = 0;
+      pendingCount = 0;
+      closedCount = 0;
+      e.target.style.color = "#3080FE";
+      e.target.previousElementSibling.style.color = "#aaa";
+      renderUserList(sortUpDown(dataDbJSON).reverse());
+    }
+
+    if (e.target.id === "iconfont-search") {
+      if ($inputValue.value !== "") {
+        renderUserList(matching(dataDbJSON, $inputValue.value));
+      }else{
+        renderUserList(dataDbJSON);
+      }
+    }
   });
 
   $main.addEventListener('mouseover', function (e) {
@@ -71,6 +100,14 @@
       e.target.addEventListener("mouseleave", function (e) {
         e.target.style = displayStyle;
       });
+    }
+  });
+
+  document.addEventListener("keypress", function (e) {
+    if ($inputValue.value !== "" && e.keyCode === 13) {
+      renderUserList(matching(dataDbJSON, $inputValue.value));
+    }else{
+      renderUserList(dataDbJSON);
     }
   });
   
@@ -97,6 +134,13 @@
       return acc;
     }, '');
     updateCount();
+  }
+
+  function sortUpDown(arr) {
+    arr.sort(function (a, b) {
+      return Date.parse(new Date(a.endTime)) - Date.parse(new Date(b.endTime))
+    });
+    return arr;
   }
 
   function getCount(data) {
@@ -162,6 +206,16 @@
     $delete.style.visibility = visibility;
     $main.parentNode.style.backgroundColor = "transparent";
     $tableThead.style.backgroundColor =  "#ebecf0";
+  }
+
+  function matching(arr, inputValue) {
+    let newArr = [];
+    for (let i = 0; i<arr.length; i++) {
+      if (arr[i].name.includes(inputValue)) {
+        newArr.push(arr[i]);
+      }
+    }
+    return newArr;
   }
 
   getListData();

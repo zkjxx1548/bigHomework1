@@ -56,12 +56,19 @@
         </div>
       </div>
       <table id="list-table">
-        <section id="table-name">项目列表</section>
+        <section id="table-name">项目列表
+          <input id="table-search" type="text" placeholder="搜索" />
+          <span id="iconfont-search">&#xe652;</span>
+        </section>
+        
         <thead id="table-thead">
           <tr>
             <th id="project-name">项目名称</th>
             <th id="project-des">项目描述</th>
-            <th id="endTime">截止时间</th>
+            <th id="endTime">截止时间
+              <span id="iconfont-up" class="iconfont-up-down">&#xe645;</span>
+              <span id="iconfont-down" class="iconfont-up-down">&#xe62a;</span>
+            </th>
             <th id="project-status">状态</th>
             <th id="project-manu">操作</th>
           </tr>

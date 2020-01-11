@@ -95,6 +95,23 @@ body {
   font-weight: 600;
   margin-top: 25px;
   margin-bottom: 25px;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+#table-search {
+  border-radius: 20px;
+}
+
+#iconfont-search {
+  font-family: "iconfont" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: absolute;
+  right: 9px;
+  top: 2px;
 }
 
 #table-thead {
@@ -105,6 +122,22 @@ body {
 
 #table-thead th {
   padding: 10px;
+}
+
+.iconfont-up-down {
+  font-family: "iconfont" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+}
+
+#iconfont-up {
+  color: #3080FE;
+}
+
+#iconfont-down {
+  color: #aaa;
 }
 
 #project-name {
